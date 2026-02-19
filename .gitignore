@@ -1,0 +1,27 @@
+# Dependencies
+node_modules/
+
+# Environment - NEVER commit this
+.env
+
+# Database files
+db/*.db
+db/*.db-shm
+db/*.db-wal
+
+# Uploaded files
+uploads/*
+!uploads/.gitkeep
+
+# Logs
+*.log
+npm-debug.log*
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode/
+.idea/
+*.swp
