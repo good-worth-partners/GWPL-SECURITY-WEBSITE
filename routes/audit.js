@@ -28,8 +28,12 @@ const upload = multer({
   storage,
   limits: { fileSize: (parseInt(process.env.UPLOAD_MAX_SIZE_MB) || 20) * 1024 * 1024 },
   fileFilter: (req, file, cb) => {
-    const allowed = /pdf|doc|docx|jpg|jpeg|png|gif|xlsx|xls/i;
-    cb(null, allowed.test(path.extname(file.originalname)));
+    const extAllowed  = /pdf|doc|docx|jpg|jpeg|png|gif|xlsx|xls/i.test(path.extname(file.originalname));
+    const mimeAllowed = /^application\/pdf$|^application\/msword$|officedocument|^image\//i.test(file.mimetype);
+    if (!extAllowed || !mimeAllowed) {
+      return cb(new Error('Unsupported file type'));
+    }
+    cb(null, true);
   },
 });
 

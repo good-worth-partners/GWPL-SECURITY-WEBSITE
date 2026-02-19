@@ -61,6 +61,59 @@
     display: flex; gap: 32px; list-style: none;
   }
 
+  .nav-toggle {
+    display: none;
+    width: 32px;
+    height: 32px;
+    border: 1px solid var(--glass-border);
+    border-radius: 4px;
+    background: transparent;
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+  }
+
+  .nav-toggle span,
+  .nav-toggle span::before,
+  .nav-toggle span::after {
+    display: block;
+    width: 18px;
+    height: 2px;
+    background: var(--white);
+    border-radius: 2px;
+    position: relative;
+    transition: transform 0.2s ease, opacity 0.2s ease;
+  }
+
+  .nav-toggle span::before,
+  .nav-toggle span::after {
+    content: "";
+    position: absolute;
+    left: 0;
+  }
+
+  .nav-toggle span::before {
+    top: -6px;
+  }
+
+  .nav-toggle span::after {
+    top: 6px;
+  }
+
+  .nav-toggle.is-open span {
+    transform: rotate(45deg);
+  }
+
+  .nav-toggle.is-open span::before {
+    transform: rotate(-90deg);
+    top: 0;
+  }
+
+  .nav-toggle.is-open span::after {
+    opacity: 0;
+  }
+
   .nav-links a {
     font-family: 'Montserrat', sans-serif;
     font-size: 0.75rem; font-weight: 600;
@@ -82,6 +135,10 @@
     padding: 10px 22px;
     clip-path: polygon(6px 0%, 100% 0%, calc(100% - 6px) 100%, 0% 100%);
     transition: background 0.3s;
+  }
+
+  .nav-cta-desktop {
+    display: inline-block;
   }
 
   .nav-cta:hover { background: var(--gold-bright); }
@@ -801,7 +858,9 @@
   .footer-inner { max-width: 1200px; margin: 0 auto; }
 
   .footer-grid {
-    display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 40px;
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 40px;
     margin-bottom: 48px;
   }
 
@@ -830,7 +889,9 @@
   .footer-bottom {
     border-top: 1px solid rgba(201,168,76,0.1);
     padding-top: 24px;
-    display: flex; justify-content: space-between; align-items: center;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
   }
 
   .footer-bottom p {
@@ -871,9 +932,72 @@
     .hero-content, .gsoc-layout, .crisis-grid, .training-grid,
     .footer-grid, .form-row { grid-template-columns: 1fr; }
     .pillars-grid, .sectors-grid, .client-grid { grid-template-columns: 1fr; }
-    .nav-links { display: none; }
+
+    nav {
+      padding: 0 4%;
+    }
+
+    .nav-links {
+      position: absolute;
+      top: 72px;
+      left: 0;
+      right: 0;
+      flex-direction: column;
+      gap: 0;
+      background: rgba(8,8,8,0.98);
+      border-bottom: 1px solid var(--glass-border);
+      padding: 10px 5% 14px;
+      display: none;
+    }
+
+    .nav-links li {
+      padding: 8px 0;
+    }
+
+    .nav-links.is-open {
+      display: flex;
+    }
+
+    .nav-toggle {
+      display: inline-flex;
+    }
+
+    .nav-cta {
+      display: none;
+    }
+
     .hero { padding-top: 90px; }
     .hero h1 { font-size: 2rem; }
+
+    .footer-grid {
+      grid-template-columns: 1fr 1fr;
+      row-gap: 32px;
+    }
+
+    .footer-brand {
+      grid-column: 1 / -1;
+    }
+
+    .footer-bottom {
+      flex-direction: column;
+      gap: 16px;
+      align-items: flex-start;
+    }
+  }
+
+  @media (max-width: 600px) {
+    .footer-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .footer-bottom {
+      align-items: center;
+      text-align: center;
+    }
+
+    .gw-seal {
+      align-self: center;
+    }
   }
 
   /* ── ABOUT PAGE ── */
@@ -1219,8 +1343,6 @@
     color: rgba(201,168,76,0.15); line-height: 1; flex-shrink: 0;
   }
 
-  .job-title-block {}
-
   .job-positions {
     display: inline-block;
     font-family: 'Montserrat', sans-serif;
@@ -1242,8 +1364,6 @@
   .job-rows {
     display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px;
   }
-
-  .job-row-item {}
 
   .job-row-label {
     font-family: 'Montserrat', sans-serif;
@@ -1333,12 +1453,11 @@
 
   .eoe-note {
     margin-top: 40px;
-    font-size: 0.75rem; color: rgba(244,246,250,0.35);
+    font-size: 0.75rem;
+    color: rgba(244,246,250,0.35);
     font-family: 'Montserrat', sans-serif;
-    letter-spacing: 0.05em; line-height: 1.7;
-  }
-
-
+    letter-spacing: 0.05em;
+    line-height: 1.7;
     animation: fadeUp 0.8s ease both;
   }
 
@@ -1778,4 +1897,280 @@
     .audit-sla-strip { grid-template-columns: 1fr; }
     .form-panel { padding: 24px 20px; }
     .form-nav { padding: 16px 20px 24px; }
+  }
+  /* ══════════════════════════════════════════════
+     RESPONSIVE FIXES — About + Sectors Pages
+     ══════════════════════════════════════════════ */
+
+  @media (max-width: 768px) {
+
+    /* ── ABOUT: Hero ── */
+    .about-hero-content {
+      grid-template-columns: 1fr;
+      gap: 40px;
+      padding: 60px 5% 40px;
+    }
+
+    /* ── ABOUT: Story section ── */
+    .about-story {
+      grid-template-columns: 1fr;
+      gap: 32px;
+      padding: 60px 5%;
+    }
+
+    .sticky-label {
+      position: static;
+    }
+
+    .sticky-label .big-text {
+      font-size: 1.6rem;
+    }
+
+    /* ── ABOUT: Vision strip ── */
+    .vision-strip .inner {
+      grid-template-columns: 1fr;
+      gap: 40px;
+    }
+
+    .vision-quote {
+      font-size: 1.2rem;
+      padding-left: 20px;
+    }
+
+    /* ── ABOUT: GOLD standard cards ── */
+    .gold-standard-grid {
+      grid-template-columns: 1fr;
+      gap: 16px;
+      margin-top: 32px;
+    }
+
+    /* ── SECTORS: Tab buttons ── */
+    .clients-tabs {
+      flex-direction: column;
+      gap: 8px;
+      align-items: stretch;
+    }
+
+    .ctab {
+      text-align: center;
+      width: 100%;
+    }
+
+    /* ── SECTORS: Client cards grid ── */
+    .client-grid {
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+
+    /* ── SECTORS: Sector pills ── */
+    .sector-pills {
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    /* ── GENERAL: Section padding ── */
+    .section-title {
+      font-size: clamp(1.6rem, 6vw, 2.4rem);
+    }
+
+    .section-desc {
+      font-size: 0.9rem;
+    }
+
+    /* ── NAV: Make logo smaller on mobile ── */
+    .logo {
+      font-size: 1rem;
+    }
+  }
+
+  @media (max-width: 480px) {
+
+    /* ── ABOUT: Even tighter on small phones ── */
+    .about-hero-content {
+      padding: 40px 5% 32px;
+    }
+
+    .about-story {
+      padding: 40px 5%;
+    }
+
+    .gs-card {
+      padding: 24px 18px;
+    }
+
+    .gs-card .gs-num {
+      font-size: 2.2rem;
+    }
+
+    /* ── SECTORS: Tab text smaller ── */
+    .ctab {
+      font-size: 0.6rem;
+      padding: 10px 14px;
+    }
+
+    /* ── SECTORS: Client card content ── */
+    .client-card {
+      padding: 20px 16px;
+    }
+
+    /* ── Vision quote ── */
+    .vision-quote {
+      font-size: 1.1rem;
+    }
+  }
+
+  /* ══════════════════════════════════════════════
+     ABOUT US — CLEAN 50/50 HERO LAYOUT
+     ══════════════════════════════════════════════ */
+
+  .about-hero-content {
+    position: relative; z-index: 2;
+    max-width: 1200px; margin: 0 auto;
+    padding: 80px 5%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    align-items: center;
+    min-height: calc(100vh - 72px);
+  }
+
+  .about-hero-left {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .about-hero-right {
+    position: relative;
+  }
+
+  .about-hero-img-wrap {
+    position: relative;
+    height: 500px;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid var(--glass-border);
+  }
+
+  .about-hero-img-overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(135deg, rgba(13,13,13,0.3) 0%, transparent 60%);
+  }
+
+  .about-stats-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1px;
+    background: var(--glass-border);
+    border: 1px solid var(--glass-border);
+    border-radius: 6px;
+    overflow: hidden;
+  }
+
+  .about-stat {
+    background: rgba(13,13,13,0.85);
+    padding: 16px 12px;
+    text-align: center;
+  }
+
+  .about-stat .stat-value {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 900;
+    font-size: 1.3rem;
+    color: var(--gold);
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+
+  .about-stat .stat-label {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.55rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--white-dim);
+  }
+
+  /* ── ABOUT: Responsive ── */
+  @media (max-width: 900px) {
+
+    .about-hero-content {
+      grid-template-columns: 1fr;
+      gap: 40px;
+      min-height: auto;
+      padding: 60px 5% 40px;
+    }
+
+    .about-hero-img-wrap {
+      height: 300px;
+    }
+
+    .about-stats-row {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .about-story {
+      grid-template-columns: 1fr;
+      gap: 24px;
+      padding: 60px 5%;
+    }
+
+    .sticky-label {
+      position: static;
+    }
+
+    .sticky-label .big-text {
+      font-size: 1.5rem;
+    }
+
+    .vision-strip .inner {
+      grid-template-columns: 1fr;
+      gap: 40px;
+    }
+
+    .gold-standard-grid {
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+
+    .clients-tabs {
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    .ctab {
+      text-align: center;
+    }
+
+    .client-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 480px) {
+
+    .about-hero-content {
+      padding: 40px 5% 32px;
+    }
+
+    .about-hero-img-wrap {
+      height: 220px;
+    }
+
+    .about-stats-row {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .about-stat .stat-value {
+      font-size: 1.1rem;
+    }
+
+    .vision-quote {
+      font-size: 1.1rem;
+      padding-left: 16px;
+    }
+
+    .gs-card {
+      padding: 20px 16px;
+    }
   }

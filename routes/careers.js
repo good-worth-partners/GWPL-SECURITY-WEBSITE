@@ -35,8 +35,12 @@ const upload = multer({
   storage,
   limits: { fileSize: 10 * 1024 * 1024 }, // 10MB for CVs
   fileFilter: (req, file, cb) => {
-    const allowed = /pdf|doc|docx/i;
-    cb(null, allowed.test(path.extname(file.originalname)));
+    const extAllowed  = /pdf|doc|docx/i.test(path.extname(file.originalname));
+    const mimeAllowed = /^application\/pdf$|^application\/msword$|officedocument/i.test(file.mimetype);
+    if (!extAllowed || !mimeAllowed) {
+      return cb(new Error('Unsupported file type'));
+    }
+    cb(null, true);
   },
 });
 
